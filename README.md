@@ -9,11 +9,6 @@
 
 2. **Virtual Enviornment** - We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
-2.1 First of all, activate venv by running this command in the project directory:
-```
-venv\Scripts\activate
-```
-
 
 3. **PIP Dependencies** - Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
 ```bash
@@ -38,6 +33,10 @@ CREATE DATABASE risoftware;
 
 ## Running the server
 
+### First of all, activate venv by running this command in the project directory:
+```
+venv\Scripts\activate
+```
 
 ### Run APP API:
 * On Windows:
