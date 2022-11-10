@@ -2,7 +2,7 @@ from flask import Flask, url_for, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:''@localhost/r&i'
 db = SQLAlchemy(app)
 
 
@@ -66,6 +66,6 @@ def logout():
 
 if(__name__ == '__main__'):
     app.secret_key = "ThisIsNotASecret:p"
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
