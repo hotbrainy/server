@@ -8,3 +8,10 @@ def is_safe_url(target):
     return test_url.scheme in ('http', 'https') and \
            ref_url.netloc == test_url.netloc
 
+def getconfig(config, section, key):
+    try:
+        v = config.get(section, key)
+    except:
+        v = None
+    return v
+

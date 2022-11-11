@@ -1,6 +1,10 @@
-
+import os
 from flask_migrate import upgrade,migrate,init,stamp
 from server.apps.app import create_app
+import configparser
+from server.tools.assists import getconfig
+config = configparser.ConfigParser()
+config.read('config.cfg')
 
 app = create_app()
 

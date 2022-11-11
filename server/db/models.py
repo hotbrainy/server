@@ -3,20 +3,19 @@ from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Boolean, A
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 import os
-import psycopg2
+import psycopg2, pymysql
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
+from configparser import ConfigParser
+from server.tools.assists import getconfig
+config = ConfigParser()
+config.read('config.cfg')
+
+### Default database is MySQL
 
 database_path = os.getenv('DATABASE_URL')
-
-if not database_path:
-    DB_HOST = os.getenv('DB_HOST', '127.0.0.1:5432')
-    DB_USER = os.getenv('DB_USER', 'postgres')
-    DB_PASSWORD = os.getenv('DB_PASSWORD', '1234')
-    DB_NAME = os.getenv('DB_NAME', 'risoftware')
-    database_path = 'postgresql+psycopg2://{}:{}@{}/{}'.format(DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
-else:
-    database_path = database_path[:8] + 'ql+psycopg2' + database_path[8:]
+database_path = getconfig(config, 'DATABASE', 'database_url') if not database_path else database_path
+database_path = 'sqlite:///sqlite.db' if not database_path else database_path
 
 
 
@@ -30,12 +29,14 @@ def setup_db(app, database_path=database_path):
         db.app = app
         db.init_app(app)
         
-        
-        db.create_all()
         try:
             new_User = User(first_name='Baby',email='baby@mail.com',password=generate_password_hash('123456', method='sha256'))
             new_User.insert()
+            new_User = User(first_name='John',email='john@mail.com',password=generate_password_hash('123123', method='sha256'))
+            new_User.insert()
+
         except: pass
+
 
 def db_drop_and_create_all():
         db.drop_all()
