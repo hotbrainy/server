@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
+from secrets import token_hex
 from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Boolean, ARRAY
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
-import os
+import os, uuid
 import psycopg2, pymysql
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
@@ -28,33 +29,39 @@ def setup_db(app, database_path=database_path):
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
         db.app = app
         db.init_app(app)
-        
+        db.create_all()
         try:
-            new_User = User(first_name='Baby',email='baby@mail.com',password=generate_password_hash('123456', method='sha256'))
+            new_User = User(first_name='Baby',email='baby5@mail.com',password=generate_password_hash('123456', method='sha256'), token_id =token_hex(16))
             new_User.insert()
-            new_User = User(first_name='John',email='john@mail.com',password=generate_password_hash('123123', method='sha256'))
+            new_User = User(first_name='John',email='john6@mail.com',password=generate_password_hash('123123', method='sha256'), token_id =token_hex(16))
             new_User.insert()
-
+            new_User = User(first_name='George',email='george567@mail.com',password=generate_password_hash('121212', method='sha256'), token_id =token_hex(16))
+            new_User.insert()
+            new_User = User(first_name='Sarah',email='sarah23@mail.com',password=generate_password_hash('343434', method='sha256'), role='worker', token_id =token_hex(16))
+            new_User.insert()
         except: pass
-
-
 def db_drop_and_create_all():
         db.drop_all()
         db.create_all()
+        
 
+def uuid4token():
+    return uuid.uuid4().hex
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
+    # mostly token_id is used, not id.
+    token_id = Column(String(32), unique=True, nullable=False, default=token_hex(16))
     email = Column(String(100), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
+    password = Column(String, nullable=False)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100))
     company_name = Column(String(100))
     phone_number = Column(String(100))
 
     role = Column(String(100), nullable=False, default='user')
-    registered_on = Column(DateTime, nullable=False, default=datetime.now(timezone.utc))
+    registered_on = Column(DateTime, default=datetime.now(timezone.utc))
     admin = Column(Boolean, nullable=False, default=False)
     confirmed = Column(Boolean, nullable=False, default=False)
     confirmed_on = Column(DateTime)
@@ -72,6 +79,7 @@ class User(UserMixin, db.Model):
     def get_all(self):
         return {
             'id': self.id,
+            'token_id': self.token_id,
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
@@ -82,6 +90,7 @@ class User(UserMixin, db.Model):
             'registered_on': self.registered_on
             
         }
+    
     def __repr__(self):
         return "<User %r>" % self.id
 

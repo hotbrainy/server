@@ -12,6 +12,9 @@
 
 3. **PIP Dependencies** - Once you have your virtual environment setup and running, install dependencies by naviging to the project directory and running:
 ```bash
+# On Windows:
+py -m pip install -r requirements.txt
+# On Linux:
 pip install -r requirements.txt
 ```
 This will install all of the required packages we selected within the `requirements.txt` file.
@@ -28,31 +31,37 @@ This will install all of the required packages we selected within the `requireme
 ## Database Setup
 Set database url as an environment variable:
 ```bash
-export DATABASE_URL='dialect+driver://username:password@host:port/database';
+# On Windows:
+set DATABASE_URL=dialect+driver://username:password@host:port/database;
+# On Linux:
+export DATABASE_URL=dialect+driver://username:password@host:port/database;
 ```
-or insert database url to `config.cfg` file.
+or insert database url to `config.cfg` file. If none of them is provided, SQLite will be applied.
 
 ## Running the server
 
 First of all, activate venv by running this command in the project directory:
-```
+
+```bash
+# On Windows:
 venv\Scripts\activate
+# On Linux:
+source venv\Scripts\activate
 ```
 
+
 ### Run APP API:
-* On Windows:
 ```bash
+# On Windows:
 py manage.py
-```
-* On Linux:
-```bash
+# On Linux:
 python3 manage.py
 ```
 
-You can see app running on http://127.0.0.1:5000
+You can see app running on http://127.0.0.1:5000.
 
-### **WARNING!!!** The React project can be configured to redirect any requests it receives on its port 3000 that it does not understand into another server. This is configured simply by adding a proxy key at the bottom `package.json`:
-```
+#### **WARNING!!!** The React project can be configured to redirect any requests it receives on its port 3000 that it does not understand into another server. This is configured simply by adding a proxy key at the bottom `package.json`:
+```json
 {
 
   ... leave all other configuration options alone ...
@@ -61,16 +70,12 @@ You can see app running on http://127.0.0.1:5000
 }
 ```
 
-## APP Resources:
-* APP on webserver: https://
-
-
 
 # Rest API
 ## Endpoints
 ### 1. GET http://127.0.0.1:5000/api/api - Check API is running.
 Sample response
-```
+```json
 {
   "ok": true,
   "result": {
@@ -81,7 +86,7 @@ Sample response
 
 ### 2. GET http://127.0.0.1:5000/api/users - Get all users information.
 Sample response
-```
+```json
 {
   "ok": true,
   "result": {
@@ -89,13 +94,14 @@ Sample response
       {
         "admin": false,
         "company_name": null,
-        "email": "baby@mail.com",
+        "email": "baby5@mail.com",
         "first_name": "Baby",
         "id": 1,
         "last_name": null,
         "phone_number": null,
-        "registered_on": "Mon, 07 Nov 2022 23:40:21 GMT",
-        "role": "user"
+        "registered_on": "Mon, 14 Nov 2022 21:55:29 GMT",
+        "role": "user",
+        "token_id": "9db4bf1065b0cc75e742ad4e46b44827"
       }
     ]
   }
@@ -106,4 +112,13 @@ Sample response
 
 
 
+
+
+
+
+
+
+
+## APP Resources:
+* APP on webserver: https://
 

@@ -5,6 +5,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SECRET_KEY = os.urandom(32)
 DEBUG = True
 
+SESSION_TYPE = "filesystem"
+SESSION_PERMANENT = False
+SESSION_USE_SIGNER = True
+
+
 PROPAGATE_EXCEPTIONS = True
 
 RECAPTCHA_USE_SSL = False
