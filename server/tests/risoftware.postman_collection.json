@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "d227d456-0a6b-4827-88c0-fa1f3633fef9",
+		"name": "risoftware",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16508487"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/who_am_i",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2ODg4NDk3MywianRpIjoiNTliOTUzOGMtZjlmZi00NDI3LWE4M2EtMzAyNWQ2YzEzOTNlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjFmMzI4MzE4OTIxNzRmYzA5ODM4MjU0MTY0YzYzMTVhIiwibmJmIjoxNjY4ODg0OTczLCJleHAiOjE2Njg4ODU4NzN9.dW3A3nwZoy9Q8uUSg3czBQlMbXzCVZi2rCyV5vm72MY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/whoami",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"whoami"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/api/login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"newuser1\",\r\n    \"password\": \"new1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/api/refresh",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2ODg4MzQ4NCwianRpIjoiNDM4ZDFhOWQtNzgzMC00OTk0LTg4NzctN2VkM2QwN2M4YjA0IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJkMTU1NmRlZWY2YjI0MDA1ODQ2NDQ5NzI2MDVhZWZkYyIsIm5iZiI6MTY2ODg4MzQ4NCwiZXhwIjoxNjcxNDc1NDg0fQ.daBKYG6rv_51ScSgurAPhxGnFCfcdWpPOFYl5IPlkUE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/refresh",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/api/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"newuser2\",\r\n    \"password\": \"new2\",\r\n    \"first_name\": \"newusersfirstname\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/signup",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

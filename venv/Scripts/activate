@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\D\PHP ROBOT CODES\REPOERS DEVELOPMENT4\R-I-Software\project\server\venv"
+VIRTUAL_ENV="C:\D\PHP ROBOT CODES\REPOERS DEVELOPMENT4\R-I-Software\project\server\R-I-Software\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

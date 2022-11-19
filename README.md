@@ -46,7 +46,9 @@ First of all, activate venv by running this command in the project directory:
 # On Windows:
 venv\Scripts\activate
 # On Linux:
-source venv\Scripts\activate
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 
@@ -64,7 +66,7 @@ You can see app running on http://127.0.0.1:5000.
 ```json
 {
 
-  ... leave all other configuration options alone ...
+  /* ... leave all other configuration options alone ... */
 
   "proxy": "http://localhost:5000"
 }
@@ -72,48 +74,97 @@ You can see app running on http://127.0.0.1:5000.
 
 
 # Rest API
+## Getting started
+* There is a sample Postman test collection `server\tests\risoftware.postman_collection.json` so you can try your first requests.
 ## Endpoints
 ### 1. GET http://127.0.0.1:5000/api/api - Check API is running.
-Sample response
+* Sample response
 ```json
 {
-  "ok": true,
-  "result": {
-    "api_working": true
-  }
+    "description": "Checking API running.",
+    "ok": true,
+    "result": {
+        "api_working": true
+    }
 }
 ```
 
 
-
-
-
-### 2. GET http://127.0.0.1:5000/api/users - Get all users information.
-Sample response
+### 2. POST http://127.0.0.1:5000/api/login - Login user.
+* Sample data:
 ```json
 {
-  "ok": true,
-  "result": {
-    "users": [
-      {
-        "admin": false,
-        "company_name": null,
-        "email": "baby5@mail.com",
-        "first_name": "Baby",
-        "id": 1,
+    "email": "baby",
+    "password": "baby"
+}
+```
+* Sample response:
+```json
+{
+    "ok": true,
+    "description": "Logged in successfully",
+    "result": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2ODg4NTIxNywianRpIjoiMDQ4YjcwMTgtZGU3Yy00MjMxLThjOGUtZTUyNzcwMzI4ZDM2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImQxNTU2ZGVlZjZiMjQwMDU4NDY0NDk3MjYwNWFlZmRjIiwibmJmIjoxNjY4ODg1MjE3LCJleHAiOjE2Njg4ODYxMTd9.8YIeMoPr3mBxBw2NP8WK_1ezZOC38614glzwL7BD9RM",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2ODg4NTIxNywianRpIjoiMjhkMGFkMjItNzg2OC00OTUxLTg0ZDktZmMxMTA4OGEwNmI4IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJkMTU1NmRlZWY2YjI0MDA1ODQ2NDQ5NzI2MDVhZWZkYyIsIm5iZiI6MTY2ODg4NTIxNywiZXhwIjoxNjcxNDc3MjE3fQ.hbO3F0Li9VCBSKgP809cA3PrHOpM3Jiteo94iiFAt8Y"
+    }
+}
+```
+
+### 3. POST http://127.0.0.1:5000/api/signup - SignUp user.
+* Sample data:
+```json
+{
+    "email": "newuser3",
+    "password": "new3",
+    "first_name": "newusersfirstname"
+}
+```
+* Sample response:
+```json
+{
+    "ok": true,
+    "description": "Created successfully.",
+    "result": {
+        "external_id": "c9199da670294ae7babc18d853dc1d02",
+        "email": "newuser3"
+    }
+}
+```
+
+
+### 4. GET http://127.0.0.1:5000/api/whoami - Who Am I endpoint (current_user).
+* Authorization: Bearer Token (access token)
+* Sample response:
+```json
+{
+    "ok": true,
+    "description": "Got user details.",
+    "result": {
+        "external_id": "1f32831892174fc09838254164c6315a",
+        "email": "newuser1",
+        "first_name": "newusersfirstname",
         "last_name": null,
+        "company_name": null,
         "phone_number": null,
-        "registered_on": "Mon, 14 Nov 2022 21:55:29 GMT",
         "role": "user",
-        "token_id": "9db4bf1065b0cc75e742ad4e46b44827"
-      }
-    ]
-  }
+        "is_admin": false
+    }
 }
 ```
 
-### 3. ...
 
+### 5. GET http://127.0.0.1:5000/api/refresh - Refresh token.
+* Authorization: Bearer Token (refresh token)
+* Sample response
+```json
+{
+    "ok": true,
+    "description": "",
+    "result": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2ODg4NTU3OCwianRpIjoiZmY1NmIyNzAtZjcwNS00MzY5LWE4MGItZTI5ZDMxMmQ5Y2M5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImQxNTU2ZGVlZjZiMjQwMDU4NDY0NDk3MjYwNWFlZmRjIiwibmJmIjoxNjY4ODg1NTc4LCJleHAiOjE2Njg4ODY0Nzh9.jnbnZL2ynziEsiAdR3IUF-mA57yFXkCJV_AnSNaaS9U"
+    }
+}
+```
 
 
 
