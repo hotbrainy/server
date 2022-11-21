@@ -14,6 +14,7 @@ config.read('config.cfg')
 ### Default database is MySQL
 
 database_path = os.getenv('DATABASE_URL')
+print(database_path)
 database_path = getconfig(config, 'DATABASE', 'database_url') if not database_path else database_path
 database_path = 'sqlite:///sqlite.db' if not database_path else database_path
 
