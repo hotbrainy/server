@@ -3,13 +3,16 @@ from secrets import token_hex
 from flask import request, jsonify, abort, flash, make_response
 from server.db.models import User
 from server.apps.auth import AuthError
-from flask_mail import Mail
 from server.tools.mail_sender import send_email_verification
+from email_validator import validate_email, caching_resolver, EmailNotValidError
+from flask_mail import Message, Mail
+
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager, create_refresh_token, current_user
 from flask_restful import Resource, Api, fields, marshal_with
 
-
+resolver = caching_resolver(timeout=10)
+mail = Mail()
 
 
 def Jsonify(result : dict, description : str = '', status_code : int = 200,):
@@ -91,6 +94,11 @@ class SignUpResource(Resource):
             data = request.get_json()
 
             email = data.get('email')
+            try:
+                email = validate_email(email, dns_resolver=resolver).email
+            except EmailNotValidError as e:
+                print(e)
+                raise AuthError("The email address is not valid. It must have exactly one @-sign.", 400)
 
             user = User.query.filter_by(email=email).first()
 
@@ -102,9 +110,9 @@ class SignUpResource(Resource):
                 password=data.get('password'),
                 first_name=data.get('first_name')
             )
-            new_User.insert()
-            
-            # send_email_verification(mail, email )
+            # new_User.insert() 
+            print(email)
+            send_email_verification(mail, email)
             return api_response({
                 "external_id": new_User.external_id,
                 "email": new_User.email
@@ -134,7 +142,7 @@ def init_rest_api(app):
     
 
     api = Api(app)
-
+    mail.init_app(app)
 
     api.add_resource(LoginResource, '/api/login')
     api.add_resource(SignUpResource, '/api/signup')

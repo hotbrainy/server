@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv, dotenv_values
 basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv()
 
 
 
@@ -21,10 +23,10 @@ class ApplicationConfig:
     RECAPTCHA_OPTIONS = {'theme': 'white'}
 
 
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 465
-    MAIL_USERNAME = 'eeee@gmail.com'
-    MAIL_PASSWORD = 'aaaabbbbccccdddd'
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
+    MAIL_PORT = os.environ.get("MAIL_PORT")
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_DEFAULT_SENDER = 'R-I Software <ri-team@ri.website.com>'
