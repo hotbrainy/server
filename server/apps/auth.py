@@ -1,6 +1,8 @@
 from server.db.models import User
 from server.tools.mail_sender import send_email_verification
 
+
+
 from flask_jwt_extended import (JWTManager as JWTManager,
                                 create_access_token,create_refresh_token,
                                 get_jwt_identity,
@@ -51,3 +53,4 @@ def init_api_authentication(app):
 
 
     # init_jwt_errorhandlers(jwt)
+

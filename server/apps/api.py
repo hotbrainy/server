@@ -1,12 +1,12 @@
 import json
 from secrets import token_hex
-from flask import request, jsonify, abort, flash, make_response
+from flask import request, jsonify, abort, flash, make_response,redirect, render_template, Blueprint, url_for
 from server.db.models import User
 from server.apps.auth import AuthError
 from server.tools.mail_sender import send_email_verification
 from email_validator import validate_email, caching_resolver, EmailNotValidError
 from flask_mail import Message, Mail
-
+from server.tools.token import generate_confirmation_token, confirm_token
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager, create_refresh_token, current_user
 from flask_restful import Resource, Api, fields, marshal_with
@@ -110,16 +110,20 @@ class SignUpResource(Resource):
                 password=data.get('password'),
                 first_name=data.get('first_name')
             )
-            # new_User.insert() 
-            print(email)
-            send_email_verification(mail, email)
+            new_User.insert() 
+            # send_email_verification(mail, email)
+            token = generate_confirmation_token(email)
+            confirm_url = url_for('confirmtoken', token=token, _external=True)
+            html = render_template('user/activate.html', confirm_url=confirm_url)
+            subject = "Please confirm your email"
+            send_email_verification(email, subject, html, mail)
             return api_response({
                 "external_id": new_User.external_id,
                 "email": new_User.email
             }, "Created successfully.", 201
             )
         except AuthError as s: raise s
-        except: abort(400)
+        # except: abort(400)
 
 class RefreshResource(Resource):
     @jwt_required(refresh=True)
@@ -136,6 +140,25 @@ class WhoAmIResource(Resource):
         return api_response(current_user.get_all(short=True), "Got user details.")
 
 
+class ConfirmToken(Resource):
+    @jwt_required()
+    def get(self):
+        if current_user.confirmed:
+            flash('Account already confirmed. Please login.', 'success')
+            return api_response(current_user.get_all(short=True), "Got user details.")
+        email = confirm_token(token)
+        user = User.query.filter_by(email=current_user.email).first_or_404()
+        if user.email == email:
+            user.confirmed = True
+            user.confirmed_on = datetime.datetime.now()
+            db.session.add(user)
+            db.session.commit()
+            flash('You have confirmed your account. Thanks!', 'success')
+        else:
+            flash('The confirmation link is invalid or has expired.', 'danger')
+        return api_response(current_user.get_all(short=True), "Got user details.")
+
+
 
 def init_rest_api(app):
     # This function is connected to app
@@ -148,6 +171,7 @@ def init_rest_api(app):
     api.add_resource(SignUpResource, '/api/signup')
     api.add_resource(RefreshResource, '/api/refresh')
     api.add_resource(WhoAmIResource, '/api/whoami')
+    api.add_resource(ConfirmToken, '/api/confirmtoken')
 
 
     @app.route('/api/api')

@@ -1,13 +1,13 @@
 import os
-from dotenv import load_dotenv, dotenv_values
 basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv()
+
 
 
 
 class ApplicationConfig:
 
     SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(32))
+    SECURITY_PASSWORD_SALT = os.environ.get("SECURITY_PASSWORD_SALT", os.urandom(32))
     DEBUG = True
 
     # SESSION_TYPE = "filesystem"

@@ -8,6 +8,8 @@ import psycopg2, pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 from configparser import ConfigParser
 from server.tools.assists import getconfig
+from dotenv import load_dotenv, dotenv_values
+load_dotenv()
 config = ConfigParser()
 config.read('config.cfg')
 
